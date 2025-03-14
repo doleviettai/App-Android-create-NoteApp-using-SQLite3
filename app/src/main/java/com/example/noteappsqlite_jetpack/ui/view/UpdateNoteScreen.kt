@@ -1,4 +1,4 @@
-package com.example.noteappsqlite_jetpack.presentation.view
+package com.example.noteappsqlite_jetpack.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -22,9 +22,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -35,7 +37,7 @@ import com.example.noteappsqlite_jetpack.presentation.NotesEvents
 
 @Composable
 fun UpdateNoteScreen(
-    note: Note,  // Truyền dữ liệu từ danh sách
+    note: Note,
     navController: NavController,
     onEvent: (NotesEvents) -> Unit
 ) {
@@ -48,7 +50,7 @@ fun UpdateNoteScreen(
                 onEvent(NotesEvents.UpdateNote(
                     id = note.id, // Truyền id vào sự kiện
                     title = titleState.value,
-                    description = descriptionState.value
+                    description = descriptionState.value,
                 ))
                 navController.popBackStack()
             }) {
@@ -117,4 +119,19 @@ fun UpdateNoteScreen(
             )
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true , showSystemUi = true)
+fun ShowUpdateNoteScreen(){
+    UpdateNoteScreen(
+        note = Note(
+            id = 1,
+            title = "Title",
+            description = "Description",
+            dateAdded = 123456
+        ),
+        navController = NavController(LocalContext.current),
+        onEvent = {}
+    )
 }

@@ -26,9 +26,9 @@ import androidx.room.Room
 import com.example.noteappsqlite_jetpack.data.Note
 import com.example.noteappsqlite_jetpack.data.NotesDatabase
 import com.example.noteappsqlite_jetpack.presentation.NotesViewModel
-import com.example.noteappsqlite_jetpack.presentation.view.AddNoteScreen
-import com.example.noteappsqlite_jetpack.presentation.view.NotesScreen
-import com.example.noteappsqlite_jetpack.presentation.view.UpdateNoteScreen
+import com.example.noteappsqlite_jetpack.ui.view.AddNoteScreen
+import com.example.noteappsqlite_jetpack.ui.view.NotesScreen
+import com.example.noteappsqlite_jetpack.ui.view.UpdateNoteScreen
 import com.example.noteappsqlite_jetpack.ui.theme.NoteAppSQLite_JetpackTheme
 
 class MainActivity : ComponentActivity() {
@@ -67,14 +67,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController , startDestination = "NotesScreen"
                 ){
                     composable("NotesScreen") {
-                        val note = state.notes.firstOrNull() ?: Note(
-                            title = "",
-                            description = "",
-                            dateAdded = 0
-                        )
-
                         NotesScreen(
-                            note = note,
                             state = state,
                             navController = navController,
                             onEvent = viewModel::onEvent
@@ -91,19 +84,17 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("UpdateNoteScreen/{id}") { backStackEntry ->
-
                         val noteId = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: -1
                         val note = state.notes.find {
                             it.id == noteId
                         }
 
                         if (note != null){
-
-                        UpdateNoteScreen(
-                            note = note,
-                            navController = navController ,
-                            onEvent = viewModel::onEvent
-                        )
+                            UpdateNoteScreen(
+                                note = note,
+                                navController = navController ,
+                                onEvent = viewModel::onEvent
+                            )
                         }
                     }
                 }

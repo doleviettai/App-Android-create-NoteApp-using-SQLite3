@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.noteappsqlite_jetpack.data.Note
 import com.example.noteappsqlite_jetpack.data.NoteDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -21,6 +22,7 @@ class NotesViewModel(
 
     private val isSortedByDateAdded = MutableStateFlow(true)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private var notes = isSortedByDateAdded.flatMapLatest {
         sort ->
         if (sort){
@@ -47,17 +49,12 @@ class NotesViewModel(
             }
 
             is NotesEvents.SaveNote -> {
-//                val note = Note(
-//                    title = event.title,
-//                    description = event.description,
-//                    dateAdded = System.currentTimeMillis()
-//                )
-
                 val note = Note(
-                    title = state.value.title.value,
-                    description = state.value.description.value,
+                    title = event.title,
+                    description = event.description,
                     dateAdded = System.currentTimeMillis()
                 )
+
 
                 viewModelScope.launch(Dispatchers.IO) {
                     dao.insertNote(note)

@@ -1,4 +1,4 @@
-package com.example.noteappsqlite_jetpack.presentation.view
+package com.example.noteappsqlite_jetpack.ui.view
 
 
 import android.annotation.SuppressLint
@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,11 +43,11 @@ import com.example.noteappsqlite_jetpack.R
 import com.example.noteappsqlite_jetpack.data.Note
 import com.example.noteappsqlite_jetpack.presentation.NoteState
 import com.example.noteappsqlite_jetpack.presentation.NotesEvents
+import com.example.noteappsqlite_jetpack.ui.theme.NoteAppSQLite_JetpackTheme
 
 @SuppressLint("ResourceType")
 @Composable
 fun NotesScreen(
-    note: Note,
     state : NoteState,
     navController: NavController,
     onEvent : (NotesEvents) -> Unit
@@ -117,8 +118,7 @@ fun NotesScreen(
                     state = state,
                     index = index,
                     onEvent = onEvent,
-                    navController = navController,
-                    note = note
+                    navController = navController
                 )
             }
 
@@ -127,73 +127,15 @@ fun NotesScreen(
     }
 }
 
+
 @Composable
-fun NoteItem(
-    state: NoteState,
-    index : Int,
-    onEvent : (NotesEvents) -> Unit,
-    navController: NavController,
-    note: Note
-){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colorScheme.onPrimary)
-//            .border(5.dp, MaterialTheme.colorScheme.onPrimaryContainer)
-            .shadow(
-                elevation = 1.dp,
-                shape = MaterialTheme.shapes.medium,
-                clip = true,
-                ambientColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                spotColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-            .padding(12.dp)
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-
-        ) {
-            Text(
-                text = state.notes[index].title,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-            )
-
-            Text(
-                text = state.notes[index].description,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Light,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-
-        IconButton(
-            onClick = {
-                navController.navigate("UpdateNoteScreen/${note.id}")
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Edit,
-                contentDescription = "Edit Note",
-                modifier = Modifier.size(30.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-
-
-        IconButton(
-            onClick = {
-                onEvent(NotesEvents.DeleteNote(state.notes[index]))
-            }
-        ) {
-           Icon(
-               imageVector = Icons.Default.Delete,
-               contentDescription = "Delete Note",
-               modifier = Modifier.size(30.dp),
-               tint = MaterialTheme.colorScheme.onPrimaryContainer
-           )
-        }
+@Preview(showBackground = true , showSystemUi = true)
+fun ShowNoteScreen(){
+    NoteAppSQLite_JetpackTheme {
+        NotesScreen(
+            state = NoteState(),
+            navController = NavController(LocalContext.current),
+            onEvent = {}
+        )
     }
 }

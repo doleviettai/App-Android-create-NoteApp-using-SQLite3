@@ -8,14 +8,13 @@ sealed interface NotesEvents {
     data class DeleteNote(val note: Note) : NotesEvents
 
     data class SaveNote(
-        val title :String,
-        val description : String
-    ): NotesEvents
+        val title: String,
+        val description: String,
+    ) : NotesEvents
 
     data class UpdateNote(
         val id: Int,
-        val title :String,
-        val description : String
-    ): NotesEvents
-
+        val title: String,
+        val description: String,
+    ) : NotesEvents
 }
